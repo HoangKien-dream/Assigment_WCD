@@ -1,0 +1,107 @@
+﻿@model IEnumerable<Assigment_WAD.Models.Product>
+
+@{
+    ViewBag.Title = "Index";
+}
+<h2>Shop Fashion No Hope</h2>
+<p>
+    @Html.ActionLink("Shopping Cart", "Index","ShoppingCart")
+</p>
+<style>
+    .card-items {
+        margin-bottom: 20px;
+        text-align: center
+    }
+
+    .card-names {
+        font-size: 20px;
+        font-weight: bolder;
+    }
+
+    .card-price {
+        font-size: 20px;
+        font-weight: bolder;
+        color: salmon;
+    }
+    .search{
+        font-weight:bolder
+    }
+</style>
+
+@using (Html.BeginForm())
+{
+    <p class="search">
+        Find by name: @Html.TextBox("SearchString")
+        <input type="submit" class="btn btn-success"  value="Search" />
+    </p>
+    <div class="search">
+       Sort Category: 
+        <select  name="SortOrder" >
+            <option value=0>--- Danh mục ---</option>
+            @foreach (var category in ViewBag.ListCategory)
+            {
+                <option value=@category.ID>@category.Name</option>
+            }
+        </select>
+    </div>
+}
+@*<table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Category.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Detail)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Thumbnail)
+            </th>
+            <th></th>
+        </tr>
+
+    @foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Category.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Detail)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Thumbnail)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
+                @Html.ActionLink("Details", "Details", new { id=item.Id }) |
+                @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+            </td>
+        </tr>
+    }
+    </table>*@
+<div class="container-fluid">
+    <div class="row">
+        @foreach (var item in Model)
+        {
+        <div class="col-lg-3 card-items">
+            <div class="card-names">@Html.DisplayFor(modelItem => item.Name)</div>
+            <div><img class="img-thumbnail" src=" @Html.DisplayFor(modelItem => item.Thumbnail)" alt="Alternate Text" /></div>
+            <div class="card-price">@Html.DisplayFor(modelItem => item.Prices)</div>
+            <a class="btn btn-danger btn-sm" href="@Url.Action("Add", "ShoppingCart", new { SanPhamID = item.Id })">
+                <span class="glyphicon glyphicon-shopping-cart"></span>  Thêm vào giỏ
+            </a> 
+        </div>
+        }
+    </div>
+</div>

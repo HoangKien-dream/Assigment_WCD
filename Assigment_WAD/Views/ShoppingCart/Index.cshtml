@@ -1,0 +1,81 @@
+﻿@model IEnumerable<Assigment_WAD.Models.ShoppingCart>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Shopping Cart</h2>
+<style>
+    .total-price{
+        font-size:25px;
+        font-weight:bolder;
+    }
+</style>
+<p>
+    @Html.ActionLink("Thêm giỏ hàng", "Index", "Products")
+</p>
+@if (Model == null || Model.Count() == 0)
+{
+    <p class="text-info text-center">
+        Giỏ hàng của bạn rỗng!
+    </p>
+}
+else
+{
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.ProductName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Amout)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Thumbnail)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Prices)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.TotalPrice)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProductName)
+            </td>
+            <td>
+                @*@Html.DisplayFor(modelItem => item.Amout)*@
+                <form action="@Url.Action("ChangeAmount")" method="get">
+                    <input type="hidden" name="SanPhamID" value="@item.ProductId" />
+                    <input type="number" min="1" step="1" name="soluongmoi" value="@item.Amout" />
+                    <button style="margin-top:10px" type="submit" class="btn btn-primary btn-sm">Updated</button>
+                </form>
+            </td>
+            <td>
+                <img style="width:30%" src="@Html.DisplayFor(modelItem => item.Thumbnail)" class="img-thumbnail" alt="Alternate Text" />
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Prices)
+            </td>
+            @{
+                var total = item.Prices * item.Amout;
+                item.TotalPrice = total;
+            }
+            <td>
+                @total
+            </td>
+            <td>
+                <a href="@Url.Action("XoaKhoiGio",new { SanPhamID = item.ProductId})" onclick="return confirm('Bạn có chắc muốn xóa sản phẩm này?');" class="btn btn-danger btn-sm">Xóa</a>
+            </td>
+        </tr>
+    }
+    <tr>
+        <td class="total-price">Tổng giá tiền: @Model.Sum(m => m.TotalPrice)</td>
+    </tr>
+</table>
+}
